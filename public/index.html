@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Management</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="logo">Wellmeadows Hospital Management</div>
+
+  <div class="nav-links">
+    <a href="#dashboard">Dashboard</a>
+    <a href="#patients">Patients</a>
+    <a href="#doctors">Doctors</a>
+    <a href="#wards">Wards</a>
+    <a href="#">Reports</a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- DASHBOARD -->
+  <section id="dashboard">
+    <h1>Dashboard</h1>
+
+    <div class="dashboard">
+      <div class="card"><h3>Patients</h3><p id="totalPatients">0</p></div>
+      <div class="card"><h3>Doctors</h3><p id="totalDoctors">0</p></div>
+      <div class="card"><h3>Wards</h3><p id="totalWards">0</p></div>
+      <div class="card"><h3>Beds</h3><p id="totalBeds">0</p></div>
+      <div class="card"><h3>Staff</h3><p id="totalStaff">0</p></div>
+    </div>
+  </section>
+
+  <!-- PATIENTS SECTION -->
+<section id="patients">
+  <h1>Patient Management</h1>
+
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Search patient...">
+  </div>
+
+  <button class="add-btn" onclick="openForm()">+ Admit Patient</button>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>DOB</th>
+          <th>Gender</th>
+          <th>Phone</th>
+          <th>Doctor</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="patientTable"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="formModal" class="modal">
+  <div class="modal-content">
+    <h3>Add Patient</h3>
+    <input id="first_name" placeholder="First Name">
+    <input id="last_name" placeholder="Last Name">
+    <input id="address" placeholder="Address">
+    <input id="dob" type="date">
+    <input id="sex" placeholder="Gender">
+    <input id="marital_status" placeholder="Marital Status">
+    <select id="doctor_id">
+      <option value="">Select Doctor</option>
+    </select>
+    <input id="phone" placeholder="Phone">
+    <button onclick="savePatient()">Save</button>
+    <button onclick="closeForm()">Cancel</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
