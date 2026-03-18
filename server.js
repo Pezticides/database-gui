@@ -1,4 +1,4 @@
-// server.js
+// server.js - CLEAN & PERFECT
 const express = require("express");
 const cors = require("cors");
 const db = require("./db");
@@ -8,7 +8,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-// ------------------- DASHBOARD -------------------
 // ------------------- DASHBOARD -------------------
 app.get("/api/dashboard", async (req, res) => {
     const queries = {
@@ -40,29 +39,77 @@ app.get("/api/dashboard", async (req, res) => {
     }
 });
 
-// ------------------- GET PATIENTS -------------------
-app.get("/api/patients", (req, res) => {
-    const search = req.query.search || "";
-    const sql = `
-        SELECT p.*, d.full_name AS doctor_name
-        FROM patient p
-        LEFT JOIN local_doctor d ON p.doctor_id = d.doctor_id
-        WHERE p.first_name LIKE ? OR p.last_name LIKE ? OR p.phone LIKE ?
-        ORDER BY p.patient_id ASC
-    `;
-    const value = `%${search}%`;
-
-    db.query(sql, [value, value, value], (err, results) => {
+// ------------------- GET DOCTORS -------------------
+app.get("/api/doctors", (req, res) => {
+    db.query("SELECT doctor_id, full_name FROM local_doctor ORDER BY full_name", (err, results) => {
         if (err) return res.status(500).json(err);
         res.json(results);
     });
 });
 
-// ------------------- GET DOCTORS (NEW ROUTE) -------------------
-app.get("/api/doctors", (req, res) => {
-    db.query("SELECT doctor_id, full_name FROM local_doctor ORDER BY full_name", (err, results) => {
+// ------------------- GET PATIENTS LIST (GLOBAL SEARCH) -------------------
+app.get("/api/patients", (req, res) => {
+    const search = req.query.search || "";
+    
+    if (search) {
+        const sql = `
+            SELECT p.*, d.full_name AS doctor_name
+            FROM patient p
+            LEFT JOIN local_doctor d ON p.doctor_id = d.doctor_id
+            WHERE p.first_name LIKE ? OR p.last_name LIKE ? OR p.phone LIKE ?
+               OR p.address LIKE ? OR d.full_name LIKE ? OR p.sex LIKE ?
+               OR p.marital_status LIKE ?
+            ORDER BY p.patient_id ASC
+        `;
+        const value = `%${search}%`;
+        db.query(sql, [value, value, value, value, value, value, value], (err, results) => {
+            if (err) return res.status(500).json(err);
+            res.json(results);
+        });
+    } else {
+        const sql = `
+            SELECT p.*, d.full_name AS doctor_name
+            FROM patient p
+            LEFT JOIN local_doctor d ON p.doctor_id = d.doctor_id
+            ORDER BY p.patient_id ASC
+        `;
+        db.query(sql, (err, results) => {
+            if (err) return res.status(500).json(err);
+            res.json(results);
+        });
+    }
+});
+
+// ------------------- GET SINGLE PATIENT (View/Edit) -------------------
+app.get("/api/patients/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `
+        SELECT p.*, d.full_name AS doctor_name, d.clinic_name
+        FROM patient p
+        LEFT JOIN local_doctor d ON p.doctor_id = d.doctor_id
+        WHERE p.patient_id = ?
+    `;
+    db.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json(err);
-        res.json(results);
+        if (results.length === 0) return res.status(404).json({ error: "Patient not found" });
+        res.json(results[0]);
+    });
+});
+
+// ------------------- UPDATE PATIENT -------------------
+app.put("/api/patients/:id", (req, res) => {
+    const id = req.params.id;
+    const { first_name, last_name, address, phone, dob, sex, marital_status, doctor_id } = req.body;
+
+    const sql = `
+        UPDATE patient 
+        SET first_name = ?, last_name = ?, address = ?, phone = ?, dob = ?, 
+            sex = ?, marital_status = ?, doctor_id = ?
+        WHERE patient_id = ?
+    `;
+    db.query(sql, [first_name, last_name, address, phone, dob, sex, marital_status, doctor_id || null, id], (err) => {
+        if (err) return res.status(500).json(err);
+        res.json({ message: "Patient updated successfully" });
     });
 });
 
@@ -90,5 +137,4 @@ app.delete("/api/patients/:id", (req, res) => {
     });
 });
 
-// ------------------- START SERVER -------------------
 app.listen(3000, () => console.log("Server running at http://localhost:3000"));

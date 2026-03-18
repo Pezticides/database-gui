@@ -37,15 +37,15 @@
     </div>
   </section>
 
-  <!-- PATIENTS SECTION -->
+<!-- PATIENTS SECTION -->
 <section id="patients">
   <h1>Patient Management</h1>
 
   <div class="search-box">
-    <input type="text" id="search" placeholder="Search patient...">
+    <input type="text" id="search" placeholder="🔍 Search by name, phone, doctor, gender, address...">
   </div>
 
-  <button class="add-btn" onclick="openForm()">+ Admit Patient</button>
+  <button class="add-btn" onclick="openAddForm()">+ Admit Patient</button>
 
   <div class="table-container">
     <table>
@@ -65,22 +65,77 @@
   </div>
 </section>
 
-<!-- MODAL -->
-<div id="formModal" class="modal">
+<!-- ADD PATIENT MODAL -->
+<div id="addModal" class="modal">
   <div class="modal-content">
-    <h3>Add Patient</h3>
-    <input id="first_name" placeholder="First Name">
-    <input id="last_name" placeholder="Last Name">
-    <input id="address" placeholder="Address">
-    <input id="dob" type="date">
-    <input id="sex" placeholder="Gender">
-    <input id="marital_status" placeholder="Marital Status">
-    <select id="doctor_id">
+    <h3>Add New Patient</h3>
+    <input id="add_first_name" placeholder="First Name *">
+    <input id="add_last_name" placeholder="Last Name *">
+    <input id="add_address" placeholder="Address">
+    <input id="add_phone" placeholder="Phone *">
+    <input id="add_dob" type="date">
+    <select id="add_sex">
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <select id="add_marital_status">
+      <option value="">Marital Status</option>
+      <option value="Single">Single</option>
+      <option value="Married">Married</option>
+      <option value="Widowed">Widowed</option>
+      <option value="Divorced">Divorced</option>
+    </select>
+    <select id="add_doctor_id">
       <option value="">Select Doctor</option>
     </select>
-    <input id="phone" placeholder="Phone">
-    <button onclick="savePatient()">Save</button>
-    <button onclick="closeForm()">Cancel</button>
+    <div class="modal-buttons">
+      <button onclick="saveNewPatient()" class="save-btn">Save Patient</button>
+      <button onclick="closeAddForm()" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW PATIENT MODAL -->
+<div id="viewModal" class="modal">
+  <div class="modal-content large">
+    <h3 id="viewTitle">Patient Details</h3>
+    <div id="viewContent"></div>
+    <div class="modal-buttons">
+      <button onclick="closeViewForm()" class="cancel-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PATIENT MODAL -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h3>Edit Patient</h3>
+    <input id="edit_patient_id" type="hidden">
+    <input id="edit_first_name" placeholder="First Name *">
+    <input id="edit_last_name" placeholder="Last Name *">
+    <input id="edit_address" placeholder="Address">
+    <input id="edit_phone" placeholder="Phone *">
+    <input id="edit_dob" type="date">
+    <select id="edit_sex">
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <select id="edit_marital_status">
+      <option value="">Marital Status</option>
+      <option value="Single">Single</option>
+      <option value="Married">Married</option>
+      <option value="Widowed">Widowed</option>
+      <option value="Divorced">Divorced</option>
+    </select>
+    <select id="edit_doctor_id">
+      <option value="">Select Doctor</option>
+    </select>
+    <div class="modal-buttons">
+      <button onclick="updatePatient()" class="save-btn">Update Patient</button>
+      <button onclick="closeEditForm()" class="cancel-btn">Cancel</button>
+    </div>
   </div>
 </div>
 
