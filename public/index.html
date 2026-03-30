@@ -9,15 +9,14 @@
 
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
   <div class="logo">Wellmeadows Hospital Management</div>
-
   <div class="nav-links">
     <a href="#dashboard">Dashboard</a>
     <a href="#patients">Patients</a>
-    <a href="#staff">Staff</a>
+    <a href="#staff">Staff & Doctors</a>
     <a href="#wards">Wards</a>
+    <a href="#transactions">Transactions</a>
     <a href="#reports">Reports</a>
   </div>
 </div>
@@ -26,64 +25,217 @@
 
   <!-- DASHBOARD -->
   <section id="dashboard">
-    <h1>Dashboard Overboard</h1>
+    <h1>Dashboard Overview</h1>
     <p>Welcome to Wellmeadows Hospital Management System</p>
 
     <div class="dashboard">
       <div class="card"><h3>Total Patients</h3><p id="totalPatients">0</p></div>
-        <div class="card"><h3>Total Doctors</h3><p id="totalDoctors">0</p></div>
-        <div class="card"><h3>Total Wards</h3><p id="totalWards">0</p></div>
-        <div class="card"><h3>Total Beds</h3><p id="totalBeds">0</p></div>
-        <div class="card"><h3>Total Staff</h3><p id="totalStaff">0</p></div>
+      <div class="card"><h3>Total Doctors</h3><p id="totalDoctors">0</p></div>
+      <div class="card"><h3>Total Wards</h3><p id="totalWards">0</p></div>
+      <div class="card"><h3>Total Beds</h3><p id="totalBeds">0</p></div>
+      <div class="card"><h3>Total Staff</h3><p id="totalStaff">0</p></div>
+    </div>
 
-        <div class=""></div>
+    <div class="appointment-form-box">
+      <h2>Schedule Appointment</h2>
+      <div class="grid-3">
+        <select id="appt_patient_id">
+          <option value="">Select Patient</option>
+        </select>
+        <select id="appt_doctor_id">
+          <option value="">Select Doctor</option>
+        </select>
+        <input type="datetime-local" id="appt_date_time">
       </div>
+      <button class="save-btn" onclick="saveAppointment()">Save Appointment</button>
+    </div>
 
-      <!-- RECENT ACTIVITIES -->
     <div class="activity-section">
       <h2>Recent Activities</h2>
-      <div id="recentActivities" class="activities-list">
-        <!-- Dynamic content -->
-      </div>
+      <div id="recentActivities" class="activities-list"></div>
     </div>
 
-    <!-- UPCOMING APPOINTMENTS -->
     <div class="appointments-section">
       <h2>Upcoming Appointments</h2>
-      <div id="upcomingAppointments" class="appointments-list">
-        <!-- Dynamic content -->
-      </div>
+      <div id="upcomingAppointments" class="appointments-list"></div>
     </div>
-
   </section>
 
-<!-- PATIENTS SECTION -->
-<section id="patients">
-  <h1>Patient Management</h1>
+  <!-- PATIENTS -->
+  <section id="patients">
+    <h1>Patient Management</h1>
 
-  <div class="search-box">
-    <input type="text" id="search" placeholder="🔍 Search by name, phone, doctor, gender, address...">
-  </div>
+    <div class="search-box">
+      <input type="text" id="search" placeholder="🔍 Search by name, phone, doctor, gender, address...">
+    </div>
 
-  <button class="add-btn" onclick="openAddForm()">+ Admit Patient</button>
+    <button class="add-btn" onclick="openAddForm()">+ Admit Patient</button>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>DOB</th>
-          <th>Gender</th>
-          <th>Phone</th>
-          <th>Doctor</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="patientTable"></tbody>
-    </table>
-  </div>
-</section>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>DOB</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Doctor</th>
+            <th>Medication</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="patientTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- STAFF + DOCTORS -->
+  <section id="staff">
+    <h1>Doctors Management</h1>
+
+    <div class="search-box">
+      <input type="text" id="doctorSearch" placeholder="🔍 Search doctor by name, clinic, ward...">
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Doctor Name</th>
+            <th>Clinic</th>
+            <th>Position</th>
+            <th>Ward</th>
+            <th>Patients</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="doctorTable"></tbody>
+      </table>
+    </div>
+
+    <h1 style="margin-top: 35px;">Staff Management</h1>
+
+    <div class="search-box">
+      <input type="text" id="staffSearch" placeholder="🔍 Search staff by name, position or ward...">
+    </div>
+
+    <button class="add-btn" onclick="openAddStaffForm()">+ Add Staff</button>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Phone</th>
+            <th>Ward</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="staffTable"></tbody>
+      </table>
+    </div>
+
+    <button class="report-btn" onclick="loadStaffByWard()">Staff by Ward Report</button>
+  </section>
+
+  <!-- WARDS -->
+  <section id="wards">
+    <h1>Ward Management</h1>
+    <div id="wardsReport"></div>
+    <button class="report-btn" onclick="loadPatientsByWard()">Patients by Ward</button>
+  </section>
+
+  <!-- TRANSACTIONS -->
+  <section id="transactions">
+    <h1>Transactions</h1>
+
+    <div class="two-column">
+      <div class="transaction-card">
+        <h3>Medication Requisition</h3>
+        <select id="req_ward_id">
+          <option value="">Select Ward</option>
+        </select>
+        <select id="req_staff_id">
+          <option value="">Requested By Staff</option>
+        </select>
+        <select id="req_drug_id">
+          <option value="">Select Drug</option>
+        </select>
+        <input type="number" id="req_quantity" placeholder="Quantity Requested">
+        <input type="text" id="req_notes" placeholder="Notes / Purpose">
+        <button class="save-btn" onclick="saveRequisition()">Submit Requisition</button>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Drug</th>
+                <th>Ward</th>
+                <th>Requested By</th>
+                <th>Qty</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="requisitionTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="transaction-card">
+        <h3>Staff Salary Calculator</h3>
+        <select id="payroll_staff_id">
+          <option value="">Select Staff</option>
+        </select>
+        <div class="grid-2">
+          <input type="number" id="payroll_month" placeholder="Payroll Month (1-12)">
+          <input type="number" id="payroll_year" placeholder="Payroll Year">
+          <input type="number" id="overtime_hours" placeholder="Overtime Hours">
+          <input type="number" id="allowances" placeholder="Allowances">
+          <input type="number" id="late_minutes" placeholder="Late Minutes">
+          <input type="number" id="cash_advance" placeholder="Cash Advance">
+        </div>
+        <button class="save-btn" onclick="calculatePayroll()">Calculate Payroll</button>
+
+        <div id="payrollResult"></div>
+
+        <h3 style="margin-top:20px;">Payroll History</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Staff</th>
+                <th>Position</th>
+                <th>Period</th>
+                <th>Gross</th>
+                <th>Deductions</th>
+                <th>Net</th>
+              </tr>
+            </thead>
+            <tbody id="payrollHistory"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORTS -->
+  <section id="reports">
+    <h1>Reports</h1>
+    <div class="report-tabs">
+      <button onclick="loadOutpatients()" class="tab-btn active">Outpatients</button>
+      <button onclick="loadWardReport()" class="tab-btn">Ward Patients</button>
+      <button onclick="loadStaffReport()" class="tab-btn">Staff Report</button>
+    </div>
+    <div id="reportContent"></div>
+  </section>
+
+</div>
 
 <!-- ADD PATIENT MODAL -->
 <div id="addModal" class="modal">
@@ -159,42 +311,129 @@
   </div>
 </div>
 
-<!-- STAFF SECTION (a,b,c) -->
-<section id="staff">
-  <h1>Staff Management</h1>
-    <div class="search-box">
-      <input type="text" id="staffSearch" placeholder="🔍 Search staff by name or position...">
+<!-- MEDICATION MODAL -->
+<div id="medicationModal" class="modal">
+  <div class="modal-content">
+    <h3 id="medPatientTitle">Prescribe Medication</h3>
+    <input type="hidden" id="med_patient_id">
+    <select id="med_drug_id">
+      <option value="">Select Drug</option>
+    </select>
+    <select id="med_doctor_id">
+      <option value="">Select Doctor</option>
+    </select>
+    <input id="med_dosage" placeholder="Dosage">
+    <input id="med_frequency" placeholder="Frequency">
+    <input id="med_route" placeholder="Route (Oral / IV / IM)">
+    <input id="med_start_date" type="date">
+    <input id="med_end_date" type="date">
+    <select id="med_status">
+      <option value="Active">Active</option>
+      <option value="Completed">Completed</option>
+      <option value="Stopped">Stopped</option>
+    </select>
+    <input id="med_notes" placeholder="Notes">
+    <div class="modal-buttons">
+      <button onclick="saveMedication()" class="save-btn">Save Medication</button>
+      <button onclick="closeMedicationModal()" class="cancel-btn">Cancel</button>
     </div>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th><th>Name</th><th>Position</th><th>Phone</th><th>Ward</th>
-          </tr>
-        </thead>
-        <tbody id="staffTable"></tbody>
-      </table>
-    </div>
-    <button class="report-btn" onclick="loadStaffByWard()">Staff by Ward Report</button>
-  </section>
+  </div>
+</div>
 
-  <!-- WARDS SECTION (g,h,i) -->
-  <section id="wards">
-    <h1>Ward Management</h1>
-    <div id="wardsReport"></div>
-    <button class="report-btn" onclick="loadPatientsByWard()">Patients by Ward</button>
-  </section>
-
-  <!-- REPORTS SECTION (f,k,n) -->
-  <section id="reports">
-    <h1>Reports</h1>
-    <div class="report-tabs">
-      <button onclick="loadOutpatients()" class="tab-btn active">Outpatients</button>
-      <button onclick="loadWardReport()" class="tab-btn">Ward Patients</button>
-      <button onclick="loadStaffReport()" class="tab-btn">Staff Report</button>
+<!-- ADD STAFF MODAL -->
+<div id="addStaffModal" class="modal">
+  <div class="modal-content">
+    <h3>Add New Staff</h3>
+    <input id="add_staff_first_name" placeholder="First Name *">
+    <input id="add_staff_last_name" placeholder="Last Name *">
+    <input id="add_staff_address" placeholder="Address">
+    <input id="add_staff_tel_number" placeholder="Phone">
+    <input id="add_staff_dob" type="date">
+    <select id="add_staff_sex">
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <input id="add_staff_nin" placeholder="NIN">
+    <input id="add_staff_position" placeholder="Position *">
+    <input id="add_staff_salary" type="number" placeholder="Salary">
+    <input id="add_staff_salary_scale" placeholder="Salary Scale">
+    <select id="add_staff_ward_id">
+      <option value="">Select Ward</option>
+    </select>
+    <div class="modal-buttons">
+      <button onclick="saveNewStaff()" class="save-btn">Save Staff</button>
+      <button onclick="closeAddStaffForm()" class="cancel-btn">Cancel</button>
     </div>
-    <div id="reportContent"></div>
-  </section>
+  </div>
+</div>
+
+<!-- VIEW STAFF MODAL -->
+<div id="viewStaffModal" class="modal">
+  <div class="modal-content large">
+    <h3 id="viewStaffTitle">Staff Details</h3>
+    <div id="viewStaffContent"></div>
+    <div class="modal-buttons">
+      <button onclick="closeViewStaffForm()" class="cancel-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT STAFF MODAL -->
+<div id="editStaffModal" class="modal">
+  <div class="modal-content">
+    <h3>Edit Staff</h3>
+    <input id="edit_staff_id" type="hidden">
+    <input id="edit_staff_first_name" placeholder="First Name *">
+    <input id="edit_staff_last_name" placeholder="Last Name *">
+    <input id="edit_staff_address" placeholder="Address">
+    <input id="edit_staff_tel_number" placeholder="Phone">
+    <input id="edit_staff_dob" type="date">
+    <select id="edit_staff_sex">
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <input id="edit_staff_nin" placeholder="NIN">
+    <input id="edit_staff_position" placeholder="Position *">
+    <input id="edit_staff_salary" type="number" placeholder="Salary">
+    <input id="edit_staff_salary_scale" placeholder="Salary Scale">
+    <select id="edit_staff_ward_id">
+      <option value="">Select Ward</option>
+    </select>
+    <div class="modal-buttons">
+      <button onclick="updateStaff()" class="save-btn">Update Staff</button>
+      <button onclick="closeEditStaffForm()" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW DOCTOR MODAL -->
+<div id="viewDoctorModal" class="modal">
+  <div class="modal-content large">
+    <h3 id="viewDoctorTitle">Doctor Information</h3>
+    <div id="viewDoctorContent"></div>
+    <div class="modal-buttons">
+      <button onclick="closeViewDoctorModal()" class="cancel-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ASSIGN DOCTOR MODAL -->
+<div id="assignDoctorModal" class="modal">
+  <div class="modal-content">
+    <h3 id="assignDoctorTitle">Assign Patient</h3>
+    <input type="hidden" id="assign_doctor_id">
+    <select id="assign_patient_id">
+      <option value="">Select Patient</option>
+    </select>
+    <div class="modal-buttons">
+      <button onclick="assignPatientToDoctor()" class="save-btn">Assign</button>
+      <button onclick="closeAssignDoctorModal()" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <script src="app.js"></script>
 </body>
+</html>

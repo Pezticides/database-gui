@@ -602,3 +602,84 @@ html {
 .tab-btn:hover {
     color: #1d4ed8;
 }
+
+.med-btn {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.med-btn:hover {
+  background: #d97706;
+}
+
+.ward-badge {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.transaction-card,
+.appointment-form-box {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.transaction-card h3,
+.appointment-form-box h2 {
+  margin-top: 0;
+  color: #1e293b;
+}
+
+.grid-2,
+.grid-3 {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.transaction-card input,
+.transaction-card select,
+.appointment-form-box input,
+.appointment-form-box select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+#transactions .table-container {
+  margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .two-column,
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
